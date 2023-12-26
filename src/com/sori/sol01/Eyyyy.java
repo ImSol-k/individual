@@ -7,18 +7,18 @@ public class Eyyyy {
 	public static void main(String[] args) {
 		
 		Scanner in = new Scanner(System.in);
-		int score;
+		int mon;
 		
 		System.out.print("근무시간 : ");
-		score = in.nextInt();
+		mon = in.nextInt();
 		
-		if(score > 8)
+		if(mon > 8)
 		{
-			System.out.println("임금은 " + (score * 12000) + "원 입니다.");
+			System.out.println("임금은 " + (mon * 12000) + "원 입니다.");
 		}
-		if(score <= 8)
+		if(mon <= 8)
 		{
-			System.out.println("임금은 " + (score * 10000) + "원 입니다.");
+			System.out.println("임금은 " + (mon * 10000) + "원 입니다.");
 		}
 		
 		in.close();
