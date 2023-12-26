@@ -1,6 +1,6 @@
 package com.sori.sol01;
 
-public class Hayy {
+public class Heeu {
 
 	public static void main(String[] args) {
 		
