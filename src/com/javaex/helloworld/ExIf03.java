@@ -2,7 +2,7 @@ package com.javaex.helloworld;
 
 import java.util.Scanner;
 
-public class IfThree {
+public class ExIf03 {
 
 	public static void main(String[] args) {
 		
