@@ -15,24 +15,23 @@ public class ExIf04 {
 		System.out.print("점수를 입력하세요 : ");
 		score = in.nextInt();
 			
-		
-		if(90 <= score && 100 >= score) {
+		if(100 < score || 0 > score) {
+			System.out.println("등급 범위 벗어남");
+		}
+		else if(90 <= score) {
 			System.out.println("A등급");
 		}
-		else if(80 <= score && 89 >= score) {
+		else if(80 <= score) {
 			System.out.println("B등급");
 		}
-		else if(70 <= score && 79 >= score) {
+		else if(70 <= score) {
 			System.out.println("C등급");
 		}
-		else if(60 <= score && 69 >= score) {
+		else if(60 <= score) {
 			System.out.println("D등급");
 		 }
-		else if(60 > score && 0 <= score){
-			System.out.println("F등급");
-		}
 		else {
-			System.out.println("등급 범위 외 점수");
+			System.out.println("F등급");
 		}
 		in.close();
 
