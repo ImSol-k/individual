@@ -32,7 +32,7 @@ public class ExIf04 {
 			System.out.println("F등급");
 		}
 		else {
-			System.out.println("등급 범위 내 점수");
+			System.out.println("등급 범위 외 점수");
 		}
 		in.close();
 
