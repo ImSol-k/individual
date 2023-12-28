@@ -2,20 +2,20 @@ package com.javaex.repetition;
 
 import java.util.Scanner;
 
-public class Ex1 {
+public class Ex01 {
 
 	public static void main(String[] args) {
 		
 		Scanner in = new Scanner(System.in);
-		int i = 0;
-		int num;
+		int i = 1;
+		int dan;
 		
-		System.out.print("횟수 : ");
-		num = in.nextInt();
+		System.out.print("단 : ");
+		dan = in.nextInt();
 		
-		while(i < num) {
+		while(i <= 9) {
 			
-			System.out.println("I like Java" + i);
+			System.out.println(dan + "*" + i + "=" + (dan * i));
 			
 			i++;
 		}
