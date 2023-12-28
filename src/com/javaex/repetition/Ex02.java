@@ -13,6 +13,12 @@ public class Ex02 {
 		star = in.nextInt();
 		
 		for(int i = 0; i < star; i++) {
+			for(int j = star - 1; j > i; j--) {
+				System.out.print(" ");
+			}
+			for(int j = 0; j < i; j++) {
+				System.out.print("*");
+			}
 			for(int j = 0; j < i; j++) {
 				System.out.print("*");
 			}
