@@ -32,7 +32,7 @@ public class Rotto {
 			
 			for (int j = 0; j < i; j++) {
 				
-				if(rotto[i] > rotto[j]) {
+				if(rotto[i] < rotto[j]) {
 					temp = rotto[i];
 					rotto[i] = rotto[j];
 					rotto[j] = temp;
