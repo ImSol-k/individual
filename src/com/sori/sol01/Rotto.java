@@ -1,7 +1,5 @@
 package com.sori.sol01;
 
-import java.util.Iterator;
-
 public class Rotto {
 
 	public static void main(String[] args) {
@@ -43,7 +41,8 @@ public class Rotto {
 		for (int i = 0; i < rotto.length; i++) {
 			System.out.print(rotto[i] + " ");
 		}
-		
+		System.out.println();
+		System.out.println("==================");
 		
 	}
 
