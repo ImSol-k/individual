@@ -10,8 +10,6 @@ public class AlgorithmApp {
 		al.showSorting();
 		
 		
-		
-		
 	}
 
 }
