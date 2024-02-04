@@ -6,13 +6,14 @@ public class AppTest {
 		
 		BookDao bookDao = new BookDao();
 		ManagerSystem ms = new ManagerSystem();
-		bookDao.BookSelect("list");
+		//bookDao.BookSelect("list");
 		//bookDao.bookInsert();
 		//bookDao.bookUpdate();
 		//bookDao.bookDelete();
 		//bookDao.bookIdSetting();
-		ms.bookFind();
-		
+		//ms.memberMain();
+		//ms.bookMain();
+		ms.rentMain();
 	}
 
 }

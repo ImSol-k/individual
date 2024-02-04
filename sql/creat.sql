@@ -37,3 +37,9 @@ set book_id = 4,
 where book_id = 4;
 
 delete from librarys where book_id = 7 ;
+select l.book_id, title, author, pubs, pub_date,
+	   case when (rent_date is null) or (rent_date is not null and return_date is not null) then '대여가능'
+		    else '대여중' end 'state'
+from librarys l left join rents r
+on l.book_id = r.book_id
+where title like '%원%';
