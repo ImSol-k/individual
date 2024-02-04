@@ -407,8 +407,10 @@ public class BookDao {
 	 */
 	public void bookRent() {
 		getConnection();
+		
+		int bid ;
 		try {
-
+			
 			query = "";
 			query += " select book_id, member_id from librarys, members";
 			
@@ -433,18 +435,18 @@ public class BookDao {
 				if (memberId.equals(id)) {
 					break;
 				} else {
-					System.out.println("**아이디가 존재하지 않습니다. 다시 입력해주세요**");
+					System.out.println("**아이디가 존재하지 않습니다.** \n**다시 입력해주세요**");
 				}
 			}
 			while (true) {
 				System.out.println("[책번호를 입력하세요]");
 				System.out.print(">> ");
-				int bid = in.nextInt();
+				bid = in.nextInt();
 				in.nextLine();
 				if (bookId == bid) {
 					break;
 				} else {
-					System.out.println("**존재하지 않는 책입니다. 다시 입력해주세요**");
+					System.out.println("**대여 할 수 없는 책입니다.** \n**다시 입력해주세요**");
 				}
 			}
 
@@ -475,8 +477,45 @@ public class BookDao {
 	 */
 	public void bookReturn() {
 		getConnection();
+		int id =0;
 		try {
 			query = "";
+			query += " select l.book_id, '대여중' state from librarys l, rents r";
+			query += " where rent_date is not null and return_date is null and l.book_id = r.book_id";
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("book_id");
+			}
+			
+			
+			query = "";
+			query += " update rents set return_date = now()";
+			query += " where book_id = ? and return_date is null";
+			pstmt = conn.prepareStatement(query);
+			
+			System.out.println("[책번호를 입력하세요]");
+			System.out.print(">> ");
+			bookId = in.nextInt();
+			in.nextLine();
+			pstmt.setInt(1, bookId);
+			if (id == bookId) {
+				System.out.println("[반납하시겠습니까? = y]\n(그만하려면 아무키나 누르세요)");
+				System.out.print(">> ");
+				yn = in.nextLine();
+				switch (yn) {
+				case "Y":
+				case "y":
+					pstmt.executeUpdate();
+					System.out.println("[반납되었습니다]");
+					break;
+				default:
+					System.out.println("[중단하였습니다]");
+					break;
+				}
+			}else {
+				System.out.println("[대여중인 책이 아닙니다]");
+			}
 
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
