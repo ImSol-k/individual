@@ -88,26 +88,22 @@ public class BookDao {
 				bookList.add(bookVo);
 			}
 			if ("list".equals(list)) {
-				System.out.println(
-						"┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-				System.out.println(String.format("┃%s\t┃%-10s\t┃%-10s\t┃%-10s\t┃%-10s\t┃%-10s\t┃", "책번호", "제목", "작가",
+				System.out.println("┌───────────────────────────────────────────────────────────────────────────────────────┐");
+				System.out.println(String.format("│%s\t│%-10s\t│%-10s\t│%-10s\t│%-10s\t│%-10s\t│", "책번호", "제목", "작가",
 						"출판사", "출판일", "상태"));
-				System.out.println(
-						"┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫");
+				System.out.println("├───────────────────────────────────────────────────────────────────────────────────────┤");
 				for (int i = 0; i < bookList.size(); i++) {
 					bookList.get(i).showBook("list");
 				}
-				System.out.println(
-						"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+				System.out.println("└───────────────────────────────────────────────────────────────────────────────────────┘");
 			} else if ("update".equals(list)) {
-				System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-				System.out.println(
-						String.format("┃%s\t┃%-10s\t┃%-10s\t┃%-10s\t┃%-10s\t┃", "책번호", "제목", "작가", "출판사", "출판일"));
-				System.out.println("┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫");
+				System.out.println("┌───────────────────────────────────────────────────────────────────────┐");
+				System.out.println(String.format("│%s\t│%-10s\t│%-10s\t│%-10s\t│%-10s\t│", "책번호", "제목", "작가", "출판사", "출판일"));
+				System.out.println("├───────────────────────────────────────────────────────────────────────┤");
 				for (int i = 0; i < bookList.size(); i++) {
 					bookList.get(i).showBook("update");
 				}
-				System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+				System.out.println("└───────────────────────────────────────────────────────────────────────┘");
 			}
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
@@ -132,7 +128,7 @@ public class BookDao {
 			pubDate = in.nextLine();
 
 			query = "";
-			query += " insert into librarys values ";
+			query += " insert into librarys ";
 			query += " values (null ";
 			query += " , ?";
 			if (author != "") {
@@ -151,8 +147,8 @@ public class BookDao {
 				query += " , null";
 			}
 			query += " )";
-			System.out.println(query);
-
+			
+			
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(count, title);
 			if (author != "") {
@@ -167,8 +163,62 @@ public class BookDao {
 				count++;
 				pstmt.setString(count, pubDate);
 			}
+			
 			pstmt.executeUpdate();
-			System.out.println(query);
+			System.out.println("[추가되었습니다]");
+			
+			 /* query = ""; query += " insert into librarys "; query +=
+			 * " values (null, ?, ?, ?, ?)";
+			 *   
+			 * 
+			 * pstmt = conn.prepareStatement(query);
+			 * 
+			 * 
+			 * if (title != "" && author != "" && pubs != "" && pubDate != "") {
+			 * pstmt.setString(1, title); pstmt.setString(2, author); pstmt.setString(3,
+			 * pubs); pstmt.setString(4, pubDate); }
+			 */
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		close();
+	}
+
+	/****************************************
+	 * 책 삭제
+	 */
+	public void bookDelete() {
+		getConnection();
+		count = 1;
+		try {
+			System.out.print("삭제할 책 번호 입력 >> ");
+			bookId = in.nextInt();
+			in.nextLine();
+			query = "";
+			query += "delete from librarys where book_id = ?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bookId);
+			pstmt.executeUpdate();
+			System.out.println("[삭제되었습니다]");
+			bookIdSetting();
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		close();
+	} // bookDelete()
+
+	/****************************************
+	 * 책번호 재정렬
+	 */
+	public void bookIdSetting() {
+		getConnection();
+		count = 1;
+		try {
+			query = "ALTER TABLE librarys AUTO_INCREMENT=?";
+
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, 1);
+			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
 			System.out.println(e);
@@ -234,7 +284,7 @@ public class BookDao {
 			}
 			count++;
 			pstmt.setInt(count, bookId);
-			//System.out.println(query);
+			// System.out.println(query);
 
 			System.out.println("count : " + count);
 			pstmt.executeUpdate();

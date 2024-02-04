@@ -182,11 +182,11 @@ public class BookVo {
 
 	public void showBook(String list) {
 		if ("list".equals(list)) {
-			System.out.println(String.format("┃%d\t┃%-10s\t┃%-10s\t┃%-10s\t┃%-10s\t┃%-10s\t┃", bookId, title, author,
+			System.out.println(String.format("│%d\t│%-10s\t│%-10s\t│%-10s\t│%-10s\t│%-10s\t│", bookId, title, author,
 					pubs, pubDate, state));
 		} else if ("update".equals(list)) {
 			System.out.println(
-					String.format("┃%d\t┃%-10s\t┃%-10s\t┃%-10s\t┃%-10s\t┃", bookId, title, author, pubs, pubDate));
+					String.format("│%d\t│%-10s\t│%-10s\t│%-10s\t│%-10s\t│", bookId, title, author, pubs, pubDate));
 		}
 	}
 

@@ -6,6 +6,7 @@ insert into librarys values (null, '이상한나라의 엘리스', '찰스 루�
 insert into librarys values (null, '심장 없는 남자', '아트포어스', null ,'2019-09-09');
 insert into librarys values (null, '인간실격', '찰스 루트위지', '맥밀란','1865-11-26');
 insert into librarys values (null, '이게 책제목?', '김소리', '아무거나',null);
+insert into librarys values (null, '원피스', '오다', '몰루', null);
 ############ 회원추가 ############
 insert into members values (null, 'qwer', '1234a', '김소리','010-1234-5643', '경기도');
 insert into members values (null, 'dkdlel', 'qlqjs', '이준기','010-2343-6411', '서울');

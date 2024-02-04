@@ -6,9 +6,12 @@ public class AppTest {
 		
 		BookDao bookDao = new BookDao();
 		
-		bookDao.BookSelect("update");
-		bookDao.bookInsert();
+		bookDao.BookSelect("list");
+		//bookDao.bookInsert();
 		//bookDao.bookUpdate();
+		//bookDao.bookDelete();
+		//bookDao.bookIdSetting();
+		
 		
 	}
 

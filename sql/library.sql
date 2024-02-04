@@ -1,5 +1,5 @@
 
--- drop database library_db;
+drop database library_db;
 
  create database library_db
    default character set utf8mb4
