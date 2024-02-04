@@ -171,7 +171,9 @@ public class BookDao {
 			}
 			pstmt.executeUpdate();
 			
-			} catch (SQLException e) { }
+			} catch (SQLException e) { 
+				System.out.println(e);
+			}
 		close();
 	}
 
@@ -197,49 +199,50 @@ public class BookDao {
 
 			query = "";
 			query += " update librarys  ";
-			query += " set book_id = ?, ";
-			if ("".equals(title)) {
-				query += " title = ?, ";
+			query += " set book_id = ? ";
+			if (title != null) {
+				query += " ,title = ? ";
 			}
-			if ("".equals(author)) {
-				query += " author = ?, ";
+			if (author != null) {
+				query += " ,author = ? ";
 			}
-			if ("".equals(pubs)) {
-				query += " pubs = ?, ";
+			if (pubs != null) {
+				query += " ,pubs = ? ";
 			}
-			if ("".equals(pubDate)) {
-				query += " pub_date = ? ";
+			if (pubDate != null) {
+				query += " ,pub_date = ? ";
 			}
 			query += " where book_id = ? ";
-			System.out.println(query);
-
 			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(count, bookId);
-			if (title != "") {
+			if (title != null) {
 				count++;
 				pstmt.setString(count, title);
-				System.out.println("**title**");
 			}
-			if (author != "") {
+			if (author != null) {
 				count++;
 				pstmt.setString(count, author);
 			}
-			if (pubs != "") {
+			if (pubs != null) {
 				count++;
 				pstmt.setString(count, pubs);
 			}
-			if (pubDate != "") {
+			if (pubDate != null) {
 				count++;
 				pstmt.setString(count, pubDate);
 			}
 			count++;
 			pstmt.setInt(count, bookId);
+			System.out.println(query);
+			
 			System.out.println("count : " + count);
 			pstmt.executeUpdate();
 			System.out.println("수정되었습니다");
 
-		} catch (SQLException e) { }
+		} catch (SQLException e) { 
+			System.out.println(e);
+		}
 		close();
 	} // bookUpdate()
 
