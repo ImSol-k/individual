@@ -72,7 +72,7 @@ public class BookDao {
 			query += " 		  case when (rent_date is null) or (rent_date is not null and return_date is not null) then '대여가능' ";
 			query += " 			   else '대여중' end 'state'  ";
 			query += " from librarys l left join rents r ";
-			query += " on l.book_id = r.book_id; ";
+			query += " on l.book_id = r.book_id ";
 
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
@@ -99,25 +99,22 @@ public class BookDao {
 				}
 				System.out.println(
 						"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-			}else if ("update".equals(list)){
+			} else if ("update".equals(list)) {
+				System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 				System.out.println(
-						"┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-				System.out.println(String.format("┃%s\t┃%-10s\t┃%-10s\t┃%-10s\t┃%-10s\t┃", "책번호", "제목", "작가",
-						"출판사", "출판일"));
-				System.out.println(
-						"┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫");
+						String.format("┃%s\t┃%-10s\t┃%-10s\t┃%-10s\t┃%-10s\t┃", "책번호", "제목", "작가", "출판사", "출판일"));
+				System.out.println("┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫");
 				for (int i = 0; i < bookList.size(); i++) {
 					bookList.get(i).showBook("update");
 				}
-				System.out.println(
-						"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+				System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 			}
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		}
 		close();
 	} // bookSelect()
-	
+
 	/****************************************
 	 * 책 추가
 	 */
@@ -133,47 +130,49 @@ public class BookDao {
 			pubs = in.nextLine();
 			System.out.print("출판일 >> ");
 			pubDate = in.nextLine();
-			
+
 			query = "";
 			query += " insert into librarys values ";
-			query += " values (null";
+			query += " values (null ";
 			query += " , ?";
-			if ("".equals(author)) {
+			if (author != "") {
 				query += " , ?";
 			} else {
 				query += " , null";
 			}
-			if ("".equals(pubs)) {
+			if (pubs != "") {
 				query += " , ?";
 			} else {
 				query += " , null";
 			}
-			if ("".equals(pubDate)) {
+			if (pubDate != "") {
 				query += " , ?";
 			} else {
 				query += " , null";
 			}
 			query += " )";
-			
+			System.out.println(query);
+
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(count, title);
-			if ("".equals(author)) {
+			if (author != "") {
 				count++;
 				pstmt.setString(count, author);
 			}
-			if ("".equals(pubs)) {
+			if (pubs != "") {
 				count++;
 				pstmt.setString(count, pubs);
 			}
-			if ("".equals(pubDate)) {
+			if (pubDate != "") {
 				count++;
 				pstmt.setString(count, pubDate);
 			}
 			pstmt.executeUpdate();
-			
-			} catch (SQLException e) { 
-				System.out.println(e);
-			}
+			System.out.println(query);
+
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
 		close();
 	}
 
@@ -200,47 +199,48 @@ public class BookDao {
 			query = "";
 			query += " update librarys  ";
 			query += " set book_id = ? ";
-			if (title != null) {
+			if (title != "") {
 				query += " ,title = ? ";
 			}
-			if (author != null) {
+			if (author != "") {
 				query += " ,author = ? ";
 			}
-			if (pubs != null) {
+			if (pubs != "") {
 				query += " ,pubs = ? ";
 			}
-			if (pubDate != null) {
+			if (pubDate != "") {
 				query += " ,pub_date = ? ";
 			}
 			query += " where book_id = ? ";
+			System.out.println(query);
 			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(count, bookId);
-			if (title != null) {
+			if (title != "") {
 				count++;
 				pstmt.setString(count, title);
 			}
-			if (author != null) {
+			if (author != "") {
 				count++;
 				pstmt.setString(count, author);
 			}
-			if (pubs != null) {
+			if (pubs != "") {
 				count++;
 				pstmt.setString(count, pubs);
 			}
-			if (pubDate != null) {
+			if (pubDate != "") {
 				count++;
 				pstmt.setString(count, pubDate);
 			}
 			count++;
 			pstmt.setInt(count, bookId);
-			System.out.println(query);
-			
+			//System.out.println(query);
+
 			System.out.println("count : " + count);
 			pstmt.executeUpdate();
-			System.out.println("수정되었습니다");
+			System.out.println("[수정되었습니다]");
 
-		} catch (SQLException e) { 
+		} catch (SQLException e) {
 			System.out.println(e);
 		}
 		close();

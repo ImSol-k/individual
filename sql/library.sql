@@ -8,19 +8,19 @@
 
 CREATE TABLE `librarys` (
 	`book_id`	int	auto_increment	primary key,
-	`title`	varchar(20)	NOT NULL,
-	`author`	varchar(10),
-	`pubs`	varchar(20),
+	`title`	varchar(100)	NOT NULL,
+	`author`	varchar(100),
+	`pubs`	varchar(100),
 	`pub_date`	date
 );
 
 CREATE TABLE `members` (
 	`member_num`	int	auto_increment	primary key,
-	`member_id`	varchar(20)	NOT NULL,
-	`member_pw`	varchar(20)	NOT NULL,
-	`meber_name`	varchar(30)	NOT NULL,
-	`ph`	varchar(20),
-	`address`	varchar(30)
+	`member_id`	varchar(100)	NOT NULL,
+	`member_pw`	varchar(100)	NOT NULL,
+	`meber_name`	varchar(100)	NOT NULL,
+	`ph`	varchar(100),
+	`address`	varchar(100)
 );
 
 CREATE TABLE `rents` (

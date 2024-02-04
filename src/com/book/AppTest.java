@@ -7,8 +7,8 @@ public class AppTest {
 		BookDao bookDao = new BookDao();
 		
 		bookDao.BookSelect("update");
-		
-		bookDao.bookUpdate();
+		bookDao.bookInsert();
+		//bookDao.bookUpdate();
 		
 	}
 
