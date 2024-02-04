@@ -23,7 +23,7 @@ public class BookDao {
 	String query = "";
 	private int count;
 	private int bookId;
-	private String title, author, pubs, pubDate, state;
+	private String title, author, pubs, pubDate, state, yn;
 
 	/****************************************
 	 * 드라이버 연결
@@ -88,17 +88,21 @@ public class BookDao {
 				bookList.add(bookVo);
 			}
 			if ("list".equals(list)) {
-				System.out.println("┌───────────────────────────────────────────────────────────────────────────────────────┐");
+				System.out.println(
+						"┌───────────────────────────────────────────────────────────────────────────────────────┐");
 				System.out.println(String.format("│%s\t│%-10s\t│%-10s\t│%-10s\t│%-10s\t│%-10s\t│", "책번호", "제목", "작가",
 						"출판사", "출판일", "상태"));
-				System.out.println("├───────────────────────────────────────────────────────────────────────────────────────┤");
+				System.out.println(
+						"├───────────────────────────────────────────────────────────────────────────────────────┤");
 				for (int i = 0; i < bookList.size(); i++) {
 					bookList.get(i).showBook("list");
 				}
-				System.out.println("└───────────────────────────────────────────────────────────────────────────────────────┘");
+				System.out.println(
+						"└───────────────────────────────────────────────────────────────────────────────────────┘");
 			} else if ("update".equals(list)) {
 				System.out.println("┌───────────────────────────────────────────────────────────────────────┐");
-				System.out.println(String.format("│%s\t│%-10s\t│%-10s\t│%-10s\t│%-10s\t│", "책번호", "제목", "작가", "출판사", "출판일"));
+				System.out.println(
+						String.format("│%s\t│%-10s\t│%-10s\t│%-10s\t│%-10s\t│", "책번호", "제목", "작가", "출판사", "출판일"));
 				System.out.println("├───────────────────────────────────────────────────────────────────────┤");
 				for (int i = 0; i < bookList.size(); i++) {
 					bookList.get(i).showBook("update");
@@ -147,8 +151,7 @@ public class BookDao {
 				query += " , null";
 			}
 			query += " )";
-			
-			
+
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(count, title);
 			if (author != "") {
@@ -163,13 +166,24 @@ public class BookDao {
 				count++;
 				pstmt.setString(count, pubDate);
 			}
-			
-			pstmt.executeUpdate();
-			System.out.println("[추가되었습니다]");
-			
-			 /* query = ""; query += " insert into librarys "; query +=
+			System.out.println("[추가하시겠습니까? = y]\n(그만하려면 아무키나 누르세요)");
+			System.out.print(">> ");
+			yn = in.nextLine();
+			switch (yn) {
+			case "Y":
+			case "y":
+				pstmt.executeUpdate();
+				System.out.println("[추가되었습니다]");
+				break;
+			default:
+				System.out.println("[중단하였습니다]");
+				break;
+			}
+
+			/*
+			 * query = ""; query += " insert into librarys "; query +=
 			 * " values (null, ?, ?, ?, ?)";
-			 *   
+			 * 
 			 * 
 			 * pstmt = conn.prepareStatement(query);
 			 * 
@@ -198,8 +212,21 @@ public class BookDao {
 			query += "delete from librarys where book_id = ?";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, bookId);
-			pstmt.executeUpdate();
-			System.out.println("[삭제되었습니다]");
+
+			System.out.println("[수정하시겠습니까? = y]\n(그만하려면 아무키나 누르세요)");
+			System.out.print(">> ");
+			yn = in.nextLine();
+			switch (yn) {
+			case "Y":
+			case "y":
+				pstmt.executeUpdate();
+				System.out.println("[삭제되었습니다]");
+				break;
+			default:
+				System.out.println("[중단하였습니다]");
+				break;
+			}
+
 			bookIdSetting();
 		} catch (SQLException e) {
 			System.out.println(e);
@@ -262,7 +289,6 @@ public class BookDao {
 				query += " ,pub_date = ? ";
 			}
 			query += " where book_id = ? ";
-			System.out.println(query);
 			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(count, bookId);
@@ -285,15 +311,95 @@ public class BookDao {
 			count++;
 			pstmt.setInt(count, bookId);
 			// System.out.println(query);
-
-			System.out.println("count : " + count);
-			pstmt.executeUpdate();
-			System.out.println("[수정되었습니다]");
+			System.out.println("[수정하시겠습니까? = y]\n(그만하려면 아무키나 누르세요)");
+			System.out.print(">> ");
+			yn = in.nextLine();
+			switch (yn) {
+			case "Y":
+			case "y":
+				pstmt.executeUpdate();
+				System.out.println("[수정되었습니다]");
+				break;
+			default:
+				System.out.println("[중단하였습니다]");
+				break;
+			}
 
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
 		close();
 	} // bookUpdate()
+
+	/****************************************
+	 * 책 검색
+	 */
+	public void bookFind(String type) {
+		getConnection();
+		bookList = new ArrayList<BookVo>();
+		boolean find = false;
+		String str = "";
+		try {
+			query = "";
+			query += " select l.book_id, title, author, pubs, pub_date,";
+			query += " 	   case when (rent_date is null) or (rent_date is not null and return_date is not null) then '대여가능'";
+			query += " 		    else '대여중' end 'state'";
+			query += " from librarys l left join rents r";
+			query += " on l.book_id = r.book_id";
+
+			if ("title".equals(type)) {
+				query += " where title like ? ";
+				System.out.println("제목을 입력하세요");
+				System.out.print(">> ");
+				str = in.nextLine();
+			} else if ("id".equals(type)) {
+				query += " where book_id like ? ";
+				System.out.println("책번호를 입력하세요");
+				System.out.print(">> ");
+				str = in.nextLine();
+				in.nextLine();
+			} else if ("author".equals(type)) {
+				query += " where author like ? ";
+				System.out.println("작가를 입력하세요");
+				System.out.print(">> ");
+				str = in.nextLine();
+			}
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, "%" + str + "%");
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				// System.out.println(query);
+				find = true;
+				bookId = rs.getInt("book_id");
+				title = rs.getString("title");
+				author = rs.getString("author");
+				pubs = rs.getString("pubs");
+				pubDate = rs.getString("pub_date");
+
+				bookVo = new BookVo(bookId, title, author, pubs, pubDate);
+				bookList.add(bookVo);
+			}
+			System.out.println("────────────────📔 검색결과 📔───────────────");
+			if (find == true) {
+				System.out.println(
+						"┌───────────────────────────────────────────────────────────────────────────────────────┐");
+				System.out.println(String.format("│%s\t│%-10s\t│%-10s\t│%-10s\t│%-10s\t│%-10s\t│", "책번호", "제목", "작가",
+						"출판사", "출판일", "상태"));
+				System.out.println(
+						"├───────────────────────────────────────────────────────────────────────────────────────┤");
+				for (int i = 0; i < bookList.size(); i++) {
+					bookList.get(i).showBook("list");
+				}
+				System.out.println(
+						"└───────────────────────────────────────────────────────────────────────────────────────┘");
+			} else {
+				System.out.println("[검색결과 없음]");
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		close();
+	}
 
 }

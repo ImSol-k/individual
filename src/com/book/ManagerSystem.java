@@ -110,7 +110,8 @@ public class ManagerSystem {
 				bookDao.bookDelete();
 				break;
 			case 5:
-				System.out.println("──────────────────📔 검색 📔─────────────────");
+				
+				bookFind();
 				break;
 			case 6:
 				start = false;
@@ -122,4 +123,40 @@ public class ManagerSystem {
 
 		}
 	} // bookMain()
+
+	/****************************************
+	 * 책 검색
+	 */
+	public void bookFind() {
+		start = true;
+		
+		while (start) {
+			System.out.println("──────────────────📔 검색 📔─────────────────");
+			System.out.println("[검색할 키워드 선택]");
+			System.out.println(" 1. 제목\n 2. 번호\n 3. 작가 \n 4. 뒤로가기");
+			System.out.print(">> ");
+			num = in.nextInt();
+			in.nextLine();
+			switch (num) {
+			case 1:
+				bookDao.bookFind("title");
+				break;
+			case 2:
+				bookDao.bookFind("id");
+				break;
+			case 3:
+				bookDao.bookFind("author");
+				break;
+			case 4:
+				start = false;
+				break;
+			default:
+				System.out.println("[잘못 입력하셨습니다]");
+				break;
+			}
+		}
+	} //bookFind()
+	
+	
+	
 }

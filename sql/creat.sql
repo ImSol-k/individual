@@ -20,7 +20,7 @@ select * from librarys;
 select * from members;
 select * from rents;
 ################################
-
+ALTER TABLE librarys AUTO_INCREMENT=1;
 select l.book_id, title, author, pubs, pub_date,
 	   case when (rent_date is null) or (rent_date is not null and return_date is not null) then '대여가능'
 		    else '대여중' end 'state'
@@ -35,3 +35,5 @@ set book_id = 4,
     pubs = '아트 포어스',
     pub_date = '2019-09-09'
 where book_id = 4;
+
+delete from librarys where book_id = 7 ;
