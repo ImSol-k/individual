@@ -25,8 +25,8 @@ CREATE TABLE `members` (
 
 CREATE TABLE `rents` (
 	`rent_id`	int	auto_increment	primary key,
-	`member_num`	int,
-	`book_id`	int,
+	`member_num`	int NOT NULL,
+	`book_id`	int NOT NULL,
 	`rent_date`	date,
 	`return_date`	date,
     constraint rents_bfk foreign key (book_id)
