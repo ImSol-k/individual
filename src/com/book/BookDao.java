@@ -407,28 +407,19 @@ public class BookDao {
 	 */
 	public void bookRent() {
 		getConnection();
-		
 		int bid ;
 		try {
 			
 			query = "";
-			query += " select book_id, member_id from librarys, members";
-			
+			query += " select member_id from members";			
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				bookId = rs.getInt("book_id");
 				memberId = rs.getString("member_id");
+				
+				
 			}
-
-			query = "";
-			query += " insert into rents";
-			query += " values (null, (select member_num from members where member_id = ?),";
-			query += " 			     (select book_id from librarys where book_id = ?), ";
-			query += " 		   date_format(now(), '%Y/%m/%d'),null)";
-			
-			pstmt = conn.prepareStatement(query);
-			while (true) {
+			while(true) {
 				System.out.println("[아이디를 입력하세요]");
 				System.out.print(">> ");
 				String id = in.nextLine();
@@ -438,7 +429,16 @@ public class BookDao {
 					System.out.println("**아이디가 존재하지 않습니다.** \n**다시 입력해주세요**");
 				}
 			}
-			while (true) {
+			
+			
+			query = "";
+			query += " select l.book_id from librarys l, rents r ";
+			query += " where rent_date is not null and return_date is null and l.book_id = r.book_id";
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				bookId = rs.getInt("book_id");
+				
 				System.out.println("[책번호를 입력하세요]");
 				System.out.print(">> ");
 				bid = in.nextInt();
@@ -449,6 +449,14 @@ public class BookDao {
 					System.out.println("**대여 할 수 없는 책입니다.** \n**다시 입력해주세요**");
 				}
 			}
+			query = "";
+			query += " insert into rents";
+			query += " values (null, (select member_num from members where member_id = ?),";
+			query += " 			     (select book_id from librarys where book_id = ?), ";
+			query += " 		   date_format(now(), '%Y/%m/%d'),null)";
+			
+			pstmt = conn.prepareStatement(query);
+			
 
 			pstmt.setString(1, memberId);
 			pstmt.setInt(2, bookId);

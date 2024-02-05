@@ -64,6 +64,10 @@ values (null, (select member_num from members where member_id = 'qwer'),
 		date_format(now(), '%Y/%m/%d'),null);
         
 select book_id, member_id from librarys, members;
+
+select l.book_id from librarys l, rents r 
+where rent_date is not null and return_date is null and l.book_id = r.book_id;
+
 select member_id from members;
 
 select book_id
